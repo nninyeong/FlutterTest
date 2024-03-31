@@ -16,7 +16,7 @@ void main() {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.bug_report),
         onPressed: () {
-          print('FAB Tabbed');
+          print('FAB Tab');
         },
       ),
     ),
