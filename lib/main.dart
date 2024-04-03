@@ -1,10 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(MaterialApp(
       home: Scaffold(
           appBar: AppBar(
-            title: Center(child: Text('위젯을 좌우로 배치하기')),
+            title: Center(child: Text('위젯을 쌓아올리기')),
             backgroundColor: Color(0xFF006090),
             foregroundColor: Colors.white,
           ),
@@ -16,36 +19,36 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
+    return Align(
+      alignment: Alignment.center,
+      child: Container(
+        decoration: BoxDecoration(color: Colors.black),
+        child: Stack(
           children: [
-            Container(
-                width: 100,
-                height: 50,
-                color: Colors.red,
-                margin: EdgeInsets.symmetric(horizontal: 8),
-                child: Text('Container 1')),
-            Container(
-                width: 100,
-                height: 50,
-                color: Colors.green,
-                margin: EdgeInsets.symmetric(horizontal: 8),
-                child: Text('Containter 2')),
-            Container(
-                width: 100,
-                height: 50,
-                color: Colors.yellow,
-                margin: EdgeInsets.symmetric(horizontal: 8),
-                child: Text('Container 3')),
-            Container(
-            width: 100,
-                height: 50,
-              color: Colors.blue,
-              margin: EdgeInsets.symmetric(horizontal: 8),
-              child: Text('Container 4')
-            )
-          ]),
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                  width: 300,
+                  height: 300,
+                  decoration: BoxDecoration(
+                      color: Colors.red, borderRadius: BorderRadius.circular(150))),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                  width: 280,
+                  height: 280,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(140))),
+            ),
+            Align(
+              alignment: Alignment.center,
+                child: const Text('Count',
+                    style: TextStyle(color: Colors.red, fontSize: 32))),
+          ],
+        ),
+      ),
     );
   }
 }
