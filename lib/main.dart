@@ -1,77 +1,62 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
 
 void main() {
-  runApp(MaterialApp(home: Scaffold(body: HomeWidget())));
+  runApp(MaterialApp(
+    home: Scaffold(
+      body: Body()
+    )
+  ));
 }
 
-class HomeWidget extends StatelessWidget {
-  const HomeWidget({super.key});
+class Body extends StatelessWidget {
+  const Body({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [ExampleStateless(), ExampleStateful(index: 3)]);  // ExampleStateful의 index를 초기값 3으로 호출
-  }
-}
-
-class ExampleStateless extends StatelessWidget {
-  const ExampleStateless({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Container(color: Colors.red),
+    return const Column(
+      children: [
+        TestCheckBox()
+      ],
     );
   }
 }
 
-class ExampleStateful extends StatefulWidget {
-  final int index;
-  const ExampleStateful({required this.index, super.key});
+class TestCheckBox extends StatefulWidget {
+  const TestCheckBox({super.key});
 
   @override
-  State<ExampleStateful> createState() => _ExampleStatefulState();
+  State<TestCheckBox> createState() => _TestCheckBoxState();
 }
 
-class _ExampleStatefulState extends State<ExampleStateful> {
-  late int _index;  // index가 null이어도 되는 상황이라면 int? index;로 해도 가능함
-  late TextEditingController textController;
+class _TestCheckBoxState extends State<TestCheckBox> {
+  late List<bool> values;
+
 
   @override
   void initState() {
     super.initState();
-    _index = widget.index;
-    textController = TextEditingController();
-  }
-
-
-  @override
-  void dispose() {
-    textController.dispose();
-    super.dispose();
+    values = [false, false, false];
   }
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            if (_index == 5) {
-              _index = 0;
-              return;
-            }
-
-            _index++;
-          });
-        },
-        child:
-            Container(color: Colors.blue.withOpacity(_index/5), child: Center(child: Text('$_index'))),
-      ),
+    return Row(
+      children: [
+        Checkbox(value: values[0], onChanged: foo),
+        Checkbox(value: values[1], onChanged: (value) => ChangeValue(1, value: value)),
+        Checkbox(value: values[2], onChanged: (value) => ChangeValue(2, value: value))],
     );
   }
+
+  void foo(bool? value){
+    ChangeValue(0, value: value);
+  }
+
+  void ChangeValue(int index, {bool? value = false}) {
+    setState(() {
+      values[index] = value!;
+    });
+  }
 }
+
