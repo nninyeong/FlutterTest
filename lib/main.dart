@@ -1,8 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 void main() {
-  runApp(MaterialApp(home: Scaffold(body: Body())));
+  runApp(MaterialApp(
+      home: Scaffold(
+    body: const Body(),
+    appBar: AppBar(
+      title: const Text('CallBack 공부하기'),
+      centerTitle: true,
+      backgroundColor: Colors.black,
+      foregroundColor: Colors.amberAccent,
+    ),
+  )));
 }
 
 class Body extends StatelessWidget {
@@ -10,103 +20,55 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [TestCheckBox(), TestRadioButton()],
-    );
+    return TestWidget();
   }
 }
 
-class TestCheckBox extends StatefulWidget {
-  const TestCheckBox({super.key});
+class TestWidget extends StatefulWidget {
+  const TestWidget({super.key});
 
   @override
-  State<TestCheckBox> createState() => _TestCheckBoxState();
+  State<TestWidget> createState() => _TestWidgetState();
 }
 
-class _TestCheckBoxState extends State<TestCheckBox> {
-  late List<bool> values;
-
-  @override
-  void initState() {
-    super.initState();
-    values = [false, false, false];
-  }
+class _TestWidgetState extends State<TestWidget> {
+  int value = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Checkbox(value: values[0], onChanged: foo),
-        Checkbox(
-            value: values[1],
-            onChanged: (value) => ChangeValue(1, value: value)),
-        Checkbox(
-            value: values[2],
-            onChanged: (value) => ChangeValue(2, value: value))
-      ],
-    );
+    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text('Count: $value', style: const TextStyle(fontSize: 30)),
+      TestButton(AddCounter)
+    ]);
   }
 
-  void foo(bool? value) {
-    ChangeValue(0, value: value);
-  }
-
-  void ChangeValue(int index, {bool? value = false}) {
-    setState(() {
-      values[index] = value!;
-    });
-  }
+  // 'Up Counter' (Container) 입력시 실행할 콜백함수
+  void AddCounter(int addValue) => setState(() => value += addValue);
 }
 
-enum TestRadioValue {
-  Test1,
-  Test2,
-  Test3;
-}
+class TestButton extends StatelessWidget {
+  const TestButton(this.callback, {super.key});
 
-class TestRadioButton extends StatefulWidget {
-  const TestRadioButton({super.key});
-
-  @override
-  State<TestRadioButton> createState() => _TestRadioButtonState();
-}
-
-class _TestRadioButtonState extends State<TestRadioButton> {
-  TestRadioValue? selectValue;
+  final Function(int) callback;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
-          leading: Radio<TestRadioValue>(
-              value: TestRadioValue.Test1,
-              groupValue: selectValue,
-              onChanged: (value) => setState(() {
-                    selectValue = value;
-                  })),
-          title: Text(TestRadioValue.Test1.name),
-          onTap: () => setState(() {
-            if(selectValue != TestRadioValue.Test1)
-              {
-                   selectValue = TestRadioValue.Test1;
-              }
-          }),  // ListTile 영역을 터치했을 때도 Radio 버튼이 변경되도록 처리
-        ),
-        Radio<TestRadioValue>(
-            value: TestRadioValue.Test2,
-            groupValue: selectValue,
-            onChanged: (value) => ChangeRadioValue(value!)),
-        Radio<TestRadioValue>(
-            value: TestRadioValue.Test3,
-            groupValue: selectValue,
-            onChanged: (value) => setState(() => selectValue = value!))
-      ],
+    return InkWell(
+      onTap: () => callback.call(1),
+      onDoubleTap: () => callback.call(5),
+      onLongPress: () => callback.call(10),
+      child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          width: double.infinity,
+          child: Center(
+              child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  decoration: BoxDecoration(border: Border.all()),
+                  child: const Text(
+                    'Up Counter',
+                    style: TextStyle(fontSize: 24),
+                  )))),
     );
-  }
-
-  void ChangeRadioValue(TestRadioValue value)
-  {
-    setState(() => selectValue = value);
   }
 }
