@@ -1,15 +1,18 @@
-import 'package:english_words/english_words.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+const assetImagePath = 'assets/images';
+const samplePath = '$assetImagePath/cat.png';
 
 void main() {
   runApp(MaterialApp(
       home: Scaffold(
-          appBar: AppBar(
-              title: Text('외부라이브러리 사용해보기'),
-              backgroundColor: Colors.deepPurpleAccent,
-              foregroundColor: Colors.white,
-              centerTitle: true),
-          body: const Body())));
+        appBar: AppBar(
+            title: Text('로컬데이터 활용하기'),
+            backgroundColor: Colors.deepPurpleAccent,
+            foregroundColor: Colors.white,
+            centerTitle: true),
+      body: Body())));
 }
 
 class Body extends StatelessWidget {
@@ -17,22 +20,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RandomWords();
+    return Center(child: Image.asset(samplePath));
   }
 }
 
-class RandomWords extends StatelessWidget {
-  const RandomWords({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final wordList = generateWordPairs().take(5).toList();
-    final widgets = wordList
-        .map((word) =>
-            Text(word.asCamelCase, style: const TextStyle(fontSize: 32)))
-        .toList();
-    return Column(
-      children: widgets,
-    );
-  }
-}
