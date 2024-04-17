@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_project_ex/screen/new_page.dart';
 
 void main() {
   runApp(const MaterialApp(home: HomeWidget()));
@@ -24,33 +25,19 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: const Text('Flutter 화면 이동하기'),
-          backgroundColor: Colors.deepPurpleAccent,
-          foregroundColor: Colors.white,
-          centerTitle: true),
-      body: homeBody(),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
-          const BottomNavigationBarItem(icon: Icon(Icons.search), label: 'search'),
-          const BottomNavigationBarItem(icon: Icon(Icons.person), label: 'person')
-        ],
-        currentIndex: index,
-        onTap: (newIndex) => setState(() => index = newIndex)
-      ),
-    );
-  }
-
-  Widget homeBody() {
-    switch (index) {
-      case 1:
-        return const Center(child: Icon(Icons.search, size: 100));
-      case 2:
-        return const Center(child: Icon(Icons.person, size: 100));
-      case 0:
-      default:
-        return const Center(child: Icon(Icons.home, size: 100));
-    }
+        appBar: AppBar(
+            title: const Text('Flutter 화면 이동하기'),
+            backgroundColor: Colors.deepPurpleAccent,
+            foregroundColor: Colors.white,
+            centerTitle: true),
+        body: Center(
+            child: TextButton(
+          child: Text('Go to New Page', style: TextStyle(fontSize: 32)),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const NewPage();
+            }));
+          },
+        )));
   }
 }
