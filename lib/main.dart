@@ -1,29 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_project_ex/screen/new_page.dart';
-import 'package:go_router/go_router.dart';
+
+import 'Style/theme.dart';
 
 void main() {
-  runApp(MaterialApp.router(
-    routerConfig: GoRouter(
-      initialLocation: '/',
-      routes: [
-        GoRoute(
-            path: '/',
-            name: 'home',
-            builder: (context, _) => const HomeWidget(),
-        ),
-        GoRoute(
-            path: '/new',
-            name: 'new',
-            builder: (context, _) => const NewPage()),
-        GoRoute(
-            path: '/new1',
-            name: 'new1',
-            builder: (context, _) => const NewPage2())
-      ],
+  runApp(
+    MaterialApp(
+      home: const HomeWidget(),
+      theme: customTheme,
     ),
-  ));
+  );
 }
 
 class HomeWidget extends StatefulWidget {
@@ -34,29 +20,52 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-  late int index;
+  int count = 0;
+
+  late AssetImage currentImage;
+  List<AssetImage> testing = [const AssetImage('assets/images/cat.png'),
+  const AssetImage('assets/images/test.png')];
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    index = 0;
+    currentImage = testing[0];
   }
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
-        appBar: AppBar(
-            title: const Text('Flutter 화면 이동하기'),
-            backgroundColor: Colors.deepPurpleAccent,
-            foregroundColor: Colors.white,
-            centerTitle: true),
-        body: Center(
-          child: TextButton(
-              child: Text('Go to New Page', style: TextStyle(fontSize: 32)),
-              onPressed: () {
-                context.pushNamed('new');
-              }),
-        )
+      appBar: AppBar(
+        title: const Text('Flutter Theme'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Press Count',
+              style: customTheme.textTheme.bodyLarge,
+            ),
+            Text(
+              '$count',
+              style: textTheme.displayLarge,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              count++;
+              currentImage = testing[count % 2];
+            });
+          },
+          child: Image(
+            image: currentImage,
+          )),
     );
   }
 }
